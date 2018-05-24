@@ -87,7 +87,7 @@ export default {
       const { name, email, password } = this;
       if (this.isLogin) {
         axios
-          .post(`http://localhost:3000/users/login/`, {
+          .post(`https://server-goodreads.faipmardoni.net/users/login/`, {
             email,
             password
           })
@@ -106,7 +106,7 @@ export default {
           });
       } else {
         axios
-          .post(`http://localhost:3000/users/`, {
+          .post(`https://server-goodreads.faipmardoni.net/users/`, {
             email,
             name,
             password

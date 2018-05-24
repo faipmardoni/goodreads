@@ -98,7 +98,7 @@ export default {
       const self = this;
       axios
         .post(
-          "http://localhost:3000/reviews",
+          "https://server-goodreads.faipmardoni.net/reviews",
           {
             content: self.review,
             userId,
@@ -128,7 +128,7 @@ export default {
     //   const self = this;
     //   axios
     //     .put(
-    //       `http://localhost:3000/questions/${self.question._id}/up-vote`,
+    //       `https://server-goodreads.faipmardoni.net/questions/${self.question._id}/up-vote`,
     //       { userId },
     //       {
     //         headers: {
@@ -155,7 +155,7 @@ export default {
     //   const self = this;
     //   axios
     //     .put(
-    //       `http://localhost:3000/questions/${self.question._id}/down-vote`,
+    //       `https://server-goodreads.faipmardoni.net/questions/${self.question._id}/down-vote`,
     //       { userId },
     //       {
     //         headers: {

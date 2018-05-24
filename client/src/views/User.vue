@@ -181,7 +181,7 @@ export default {
       let self = this;
       axios
         .post(
-          "http://localhost:3000/books/",
+          "https://server-goodreads.faipmardoni.net/books/",
           formData,
           {
             headers: {
@@ -209,7 +209,7 @@ export default {
       const token = localStorage.getItem("Token");
       let self = this;
       axios
-        .delete(`http://localhost:3000/books/${book._id}`, {
+        .delete(`https://server-goodreads.faipmardoni.net/books/${book._id}`, {
           headers: {
             token
           }
@@ -228,7 +228,7 @@ export default {
       const token = localStorage.getItem("Token");
       let self = this;
       axios
-        .delete(`http://localhost:3000/reviews/${item._id}`, {
+        .delete(`https://server-goodreads.faipmardoni.net/reviews/${item._id}`, {
           headers: {
             token
           }
@@ -259,7 +259,7 @@ export default {
     //   let self = this;
     //   axios
     //     .put(
-    //       `http://localhost:3000/questions/${self.post._id}`,
+    //       `https://server-goodreads.faipmardoni.net/questions/${self.post._id}`,
     //       {
     //         title: self.title,
     //         content: self.content

@@ -35,7 +35,7 @@ export default new Vuex.Store({
   actions: {
     getBooks({ commit }) {
       axios
-        .get('http://localhost:3000/books/')
+        .get('https://server-goodreads.faipmardoni.net/books/')
         .then((result) => {
           let arrBook = result.data.result
           function compare(a,b) {
@@ -54,7 +54,7 @@ export default new Vuex.Store({
       const token = localStorage.getItem('Token')
       const userId = localStorage.getItem('userId')
       axios.
-        get(`http://localhost:3000/users/${userId}`, {
+        get(`https://server-goodreads.faipmardoni.net/users/${userId}`, {
           headers: {
             token
           }
