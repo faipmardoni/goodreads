@@ -18,7 +18,7 @@
             <b-img :src="book.image" height="350"/>
           </b-col>
           <b-col>
-            DATA: 
+            <h2>DATA BOOK</h2> 
             <ul>
               <li>Penulis: {{book.penulis}}</li>
               <li>Penerbit: {{book.penerbit}}</li>
@@ -118,7 +118,7 @@ export default {
             });
         })
         .catch(err => {
-          Swal("Oops!", "Something went wrong!", "error");
+          Swal("Oops!", `${err.response.data.message}`, "error");
           console.log("err :", err.response);
         });
     },

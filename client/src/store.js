@@ -8,8 +8,8 @@ export default new Vuex.Store({
   state: {
     hasLogin: false,
     books: [],
-    questionsByUser: [],
-    answersByUser: []
+    booksByUser: [],
+    reviewsByUser: []
   },
   mutations: {
     changeLogin(state, val) {
@@ -18,44 +18,53 @@ export default new Vuex.Store({
     getBooks(state, val) {
       state.books = val
     },
-    // questionsByUser(state, val) {
-    //   state.questionsByUser = val
-    // },
-    // answersByUser(state, val) {
-    //   state.answersByUser = val
-    // },
+    getbooksByUser(state, val) {
+      state.booksByUser = val
+    },
+    reviewsByUser(state, val) {
+      state.reviewsByUser = val
+    },
     addBooks(state, val) {
       state.books.unshift(val)
-      // state.questionsByUser.unshift(val)
+      state.booksByUser.unshift(val)
     },
-    // deleteQuestions(state, val) {
-    //   state.questionsByUser.splice(val, 1)    
-    // }
+    deleteBook(state, val) {
+      state.booksByUser.splice(val, 1)    
+    }
   },
   actions: {
     getBooks({ commit }) {
       axios
         .get('http://localhost:3000/books/')
         .then((result) => {
-          commit('getBooks', result.data.result)
+          let arrBook = result.data.result
+          function compare(a,b) {
+            if (a.reviews.length > b.reviews.length)
+              return -1;
+            if (a.reviews.length < b.reviews.length)
+              return 1;
+            return 0;
+          }
+          arrBook.sort(compare)
+          commit('getBooks', arrBook)
         }).catch((err) => {
         });
     },
-    // questionsByUser({ commit }) {
-    //   const token = localStorage.getItem('Token')
-    //   const userId = localStorage.getItem('userId')
-    //   axios.
-    //     get(`http://localhost:3000/users/${userId}`, {
-    //       headers: {
-    //         token
-    //       }
-    //     })
-    //     .then((result) => {
-    //       commit('questionsByUser', result.data.user.questions)
-    //       commit('answersByUser', result.data.user.answers)
-    //     }).catch((err) => {
-    //       console.log('err :', err.response.data);
-    //     });
-    // }
+    getbooksByUser({ commit }) {
+      const token = localStorage.getItem('Token')
+      const userId = localStorage.getItem('userId')
+      axios.
+        get(`http://localhost:3000/users/${userId}`, {
+          headers: {
+            token
+          }
+        })
+        .then((result) => {
+          commit('getbooksByUser', result.data.user.books)
+          commit('reviewsByUser', result.data.user.reviews)
+        }).catch((err) => {
+          console.log('err :', err.response.data);
+        });
+    }
   }
 })

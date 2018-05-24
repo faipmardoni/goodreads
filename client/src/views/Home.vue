@@ -4,7 +4,7 @@
     <b-container>
       <b-row>
         <ListBook v-for="item in books" :key="item.id" :book="item"/>
-      </b-row>   
+      </b-row>
     </b-container>
     <!-- <img src="../assets/logo.png"> -->
   </div>

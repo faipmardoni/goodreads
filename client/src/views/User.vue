@@ -25,52 +25,48 @@
         <b-progress :value="progress" show-progress style="width: 100%; margin-top: 20px;"></b-progress>
         <hr>
     </b-container>
-    <!-- <b-container>
-      <h2>List Your Questions</h2>
-      <b-table striped hover :items="items" :fields="fields">
+    <b-container>
+      <h2>List Your Books</h2>
+      <b-table striped hover :items="books" :fields="fields">
         <template slot="createdAt" slot-scope="row">
             {{formatDate(row.item.createdAt)}}
           </template>
-          <template slot="updatedAt" slot-scope="row">
-            {{formatDate(row.item.updatedAt)}}
+          <template slot="judul" slot-scope="row">
+           {{row.item.judul}}
           </template>
         <template slot="actions" slot-scope="row">
           <b-button-group size="sm">
-            <b-button variant="primary" @click="editPost(row.item)">
-              EDIT
-            </b-button>
-            <b-button variant="danger" @click="deletePost(row.item)">
+            <b-button variant="danger" @click="deleteBook(row.item)">
               DELETE
             </b-button>
           </b-button-group>
         </template>
       </b-table>
       <hr>
-    </b-container> -->
-    <!-- <b-container>
-      <h2>List Your Answers</h2>
-      {{items.answers}}
-        <b-table striped hover :items="answers" :fields="answerFields">
+    </b-container>
+    <b-container>
+      <h2>List Your Book Reviews</h2>
+        <b-table striped hover :items="reviews" :fields="reviewFields">
           <template slot="createdAt" slot-scope="row">
             {{formatDate(row.item.createdAt)}}
           </template>
-          <template slot="updatedAt" slot-scope="row">
-            {{formatDate(row.item.updatedAt)}}
-          </template>
-          <template slot="questionId" slot-scope="row">
-            <router-link :to="{ name: 'question', params: { id: row.item.questionId }}">
-              {{row.item.questionId}}
+          <template slot="bookId" slot-scope="row">
+            <router-link :to="{ name: 'book', params: { id: row.item.bookId }}">
+              {{row.item.bookId}}
             </router-link>
+          </template>
+          <template slot="content" slot-scope="row">
+            <div v-html="row.item.content"></div>
           </template>
           <template slot="actions" slot-scope="row">
             <b-button-group size="sm">
-              <b-button variant="danger" @click="deleteAnswer(row.item)">
+              <b-button variant="danger" @click="deleteReview(row.item)">
                 DELETE
               </b-button>
             </b-button-group>
           </template>
         </b-table>
-    </b-container> -->
+    </b-container>
   </div>
 </template>
 
@@ -93,46 +89,46 @@ export default {
       penulis: "",
       image: "",
       progress: 0,
-      // answerFields: {
-      //   post_created: {
-      //     key: "createdAt",
-      //     label: "Created",
-      //     sortable: true
-      //   },
-      //   post_updated: {
-      //     key: "updatedAt",
-      //     label: "Updated",
-      //     sortable: true
-      //   },
-      //   post_title: {
-      //     key: "questionId",
-      //     label: "ID Question",
-      //     sortable: true
-      //   },
-      //   actions: {
-      //     key: "actions"
-      //   }
-      // },
-      // fields: {
-      //   post_created: {
-      //     key: "createdAt",
-      //     label: "Created",
-      //     sortable: true
-      //   },
-      //   post_updated: {
-      //     key: "updatedAt",
-      //     label: "Updated",
-      //     sortable: true
-      //   },
-      //   post_title: {
-      //     key: "title",
-      //     label: "Title",
-      //     sortable: true
-      //   },
-      //   actions: {
-      //     key: "actions"
-      //   }
-      // },
+      reviewFields: {
+        reviews_created: {
+          key: "createdAt",
+          label: "Created",
+          sortable: true
+        },
+        reviews_bookId: {
+          key: "bookId",
+          label: "ID BOOK",
+          sortable: true
+        },
+        reviews_content: {
+          key: "content",
+          label: "Your Review",
+          sortable: true
+        },
+        actions: {
+          key: "actions"
+        }
+      },
+      fields: {
+        books_created: {
+          key: "createdAt",
+          label: "Date Pulished",
+          sortable: true
+        },
+        books_title: {
+          key: "judul",
+          label: "Judul Buku",
+          sortable: true
+        },
+        books_author: {
+          key: "penulis",
+          label: "Penulis",
+          sortable: true
+        },
+        actions: {
+          key: "actions"
+        }
+      },
     };
   },
   created() {
@@ -142,20 +138,20 @@ export default {
         name: "home"
       });
     } else {
-      // store.dispatch("questionsByUser");
+      store.dispatch("getbooksByUser");
     }
   },
   computed: {
-    // items: {
-    //   get() {
-    //     return this.$store.state.questionsByUser;
-    //   }
-    // },
-    // answers: {
-    //   get() {
-    //     return this.$store.state.answersByUser;
-    //   }
-    // },
+    books: {
+      get() {
+        return this.$store.state.booksByUser;
+      }
+    },
+    reviews: {
+      get() {
+        return this.$store.state.reviewsByUser;
+      }
+    },
     hasLogin: {
       get() {
         return this.$store.state.hasLogin;
@@ -163,16 +159,16 @@ export default {
     }
   },
   methods: {
-    // formatDate(date) {
-    //   let event = new Date(date);
-    //   var options = {
-    //     weekday: "long",
-    //     year: "numeric",
-    //     month: "long",
-    //     day: "numeric"
-    //   };
-    //   return event.toLocaleDateString("en-US", options);
-    // },
+    formatDate(date) {
+      let event = new Date(date);
+      var options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      };
+      return event.toLocaleDateString("en-US", options);
+    },
     submit() {
       const token = localStorage.getItem("Token");
       let userId = localStorage.getItem("userId");
@@ -208,45 +204,45 @@ export default {
           Swal("Oops!", "Something went wrong!", "error");
           console.log("error :", error.response);
         });
-    }
-    // deletePost(item) {
-    //   const token = localStorage.getItem("Token");
-    //   let self = this;
-    //   axios
-    //     .delete(`http://localhost:3000/questions/${item._id}`, {
-    //       headers: {
-    //         token
-    //       }
-    //     })
-    //     .then(response => {
-    //       const idx = self.items.indexOf(item);
-    //       Swal("Deleted!", "Your question has been deleted!", "success");
-    //       store.commit("deleteQuestions", idx);
-    //     })
-    //     .catch(error => {
-    //       Swal("Oops!", "Something went wrong!", "error");
-    //       console.log("error :", error);
-    //     });
-    // },
-    // deleteAnswer(item) {
-    //   const token = localStorage.getItem("Token");
-    //   let self = this;
-    //   axios
-    //     .delete(`http://localhost:3000/answers/${item._id}`, {
-    //       headers: {
-    //         token
-    //       }
-    //     })
-    //     .then(response => {
-    //       const idx = self.answers.indexOf(item)
-    //       self.answers.splice(idx, 1)
-    //       Swal("Deleted!", "Your answers has been deleted!", "success");
-    //     })
-    //     .catch(error => {
-    //       Swal("Oops!", "Something went wrong!", "error");
-    //       console.log("error :", error);
-    //     });
-    // },
+    },
+    deleteBook(book) {
+      const token = localStorage.getItem("Token");
+      let self = this;
+      axios
+        .delete(`http://localhost:3000/books/${book._id}`, {
+          headers: {
+            token
+          }
+        })
+        .then(response => {
+          const idx = self.books.indexOf(book);
+          Swal("Deleted!", "Your book has been deleted!", "success");
+          store.commit("deleteBook", idx);
+        })
+        .catch(error => {
+          Swal("Oops!", "Something went wrong!", "error");
+          console.log("error :", error);
+        });
+    },
+    deleteReview(item) {
+      const token = localStorage.getItem("Token");
+      let self = this;
+      axios
+        .delete(`http://localhost:3000/reviews/${item._id}`, {
+          headers: {
+            token
+          }
+        })
+        .then(response => {
+          const idx = self.reviews.indexOf(item)
+          self.reviews.splice(idx, 1)
+          Swal("Deleted!", "Your review has been deleted!", "success");
+        })
+        .catch(error => {
+          Swal("Oops!", "Something went wrong!", "error");
+          console.log("error :", error);
+        });
+    },
     // reset() {
     //   Object.assign(this.$data, this.$options.data.call(this));
     // },

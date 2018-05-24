@@ -49,8 +49,8 @@ module.exports = {
   },
   detailUser(req, res, next) {
     User.findById(req.params.id)
-      .populate('questions')
-      .populate('answers')
+      .populate('books')
+      .populate('reviews')
       .exec()
       .then(user => {
         res.status(200).json({

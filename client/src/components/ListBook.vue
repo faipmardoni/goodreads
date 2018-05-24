@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="listBooks"> -->
     <b-col cols="4" style="margin-bottom:20px;">
         <b-card :title="book.judul"
                 :img-src="book.image"
@@ -16,7 +15,6 @@
             </div>
         </b-card>
     </b-col>
-  <!-- </div> -->
 </template>
 
 <script>

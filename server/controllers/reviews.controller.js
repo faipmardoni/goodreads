@@ -4,20 +4,22 @@ const Review = require('../models/review.model')
 
 module.exports = {
   addDoc(req, res) {
-    console.log('req.body :', req.body);
     const { content, userId, bookId } = req.body
-    Review.create(req.body)
-      .then((result) => {
-        User.findByIdAndUpdate(userId,
-          {
-            $push: {
-              reviews: result._id
-            }
+    Book.findById(bookId)
+      .populate('reviews')
+      .exec()
+      .then(book => {
+        book.reviews.forEach(r => {
+          console.log('r :', r);
+          if (r.userId == userId) {
+            res.status(401).json({
+              message: 'user sudah pernah melakukan review pada buku ini'
+            })
           }
-        )
-          .exec()
-          .then(user => {
-            Book.findByIdAndUpdate(bookId,
+        })
+        Review.create(req.body)
+          .then((result) => {
+            User.findByIdAndUpdate(userId,
               {
                 $push: {
                   reviews: result._id
@@ -25,14 +27,25 @@ module.exports = {
               }
             )
               .exec()
-              .then(book => {
-                res.status(200).json({
-                  message: 'success',
-                  result
-                })
+              .then(user => {
+                Book.findByIdAndUpdate(bookId,
+                  {
+                    $push: {
+                      reviews: result._id
+                    }
+                  }
+                )
+                  .exec()
+                  .then(book => {
+                    res.status(200).json({
+                      message: 'success',
+                      result
+                    })
+                  })
               })
           })
-      }).catch((err) => {
+      })
+      .catch((err) => {
         res.status(400).json({
           message: 'failed',
           err
