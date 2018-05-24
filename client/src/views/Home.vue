@@ -1,18 +1,34 @@
 <template>
   <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Navbar/>    
+    <b-container>
+      <b-row>
+        <ListBook v-for="item in books" :key="item.id" :book="item"/>
+      </b-row>   
+    </b-container>
+    <!-- <img src="../assets/logo.png"> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import Navbar from '@/components/Navbar.vue'
+import ListBook from '@/components/ListBook.vue'
 export default {
   name: 'home',
   components: {
-    HelloWorld
-  }
+    Navbar,
+    ListBook
+  },
+  mounted() {
+    this.$store.dispatch('getBooks')
+  },
+  computed: {
+    books: {
+      get() {
+        return this.$store.state.books
+      }
+    }
+  },
 }
 </script>
